@@ -75,13 +75,6 @@
       <h1 class="text-center mb-4">Modificar Personaje</h1>
 
       <div class="card p-4 shadow-sm">  
-        <div class="row">  
-          <div class="col-md-12 mb-3">
-            <label class="form-label">Personaje</label>
-            <select class="form-control" id="selectPersonaje" required>
-            </select>
-          </div>
-        </div>
 
         <div class="row">  
           <div class="col-md-12 mb-3">
@@ -91,9 +84,22 @@
           </div>
         </div>
 
+
+        <div class="row">  
+          <div class="col-md-12 mb-3">
+            <label class="form-label">Personaje</label>
+            <select class="form-control" id="selectPersonaje" required>
+            </select>
+          </div>
+        </div>
+
         <div class="d-flex justify-content-center">
           <button id="bttSubmit" class="btn btn-primary w-50">Modificar Personaje</button>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-6 text-center p-5" id="imgSerie"></div>
+        <div class="col-6 text-center p-5" id="imgPersonaje"></div>
       </div>
     </div>
   </body>
@@ -117,13 +123,45 @@
                   type: "PUT",
                   url: apiSeries + request,
                   success: function (response) {
-                      let link = './jqueryvictorHome.html'
+                    let link = './jqueryVictorPersonajesView.html?id=' + parseInt(serie)
                       $(location).attr('href',link);
                   }
               });
             } else{
                 alert('completa los datos')
             }
+        })
+
+        $('#selectSerie').change(function() {
+          request = 'api/Series/' + $('#selectSerie').val()
+          $.ajax({
+              type: "GET",
+              url: apiSeries + request,
+              success: function (response) {
+                console.log(response)
+                $('#imgSerie').html('')
+                $('#imgSerie').append($('<h2>', {text: response.nombre}))
+                $('#imgSerie').append($('<hr>'))
+                $('#imgSerie').append($('<img>', {src: response.imagen, class: 'w-100'}))
+              }
+            });
+
+        })
+
+        $('#selectPersonaje').change(function() {
+          request = 'api/Personajes/' + $('#selectPersonaje').val()
+          $.ajax({
+              type: "GET",
+              url: apiSeries + request,
+              success: function (response) {
+                console.log(response)
+                $('#imgPersonaje').html('')
+                $('#imgPersonaje').append($('<h2>', {text: response.nombre}))
+                $('#imgPersonaje').append($('<hr>'))
+                $('#imgPersonaje').append($('<img>', {src: response.imagen, class: 'w-100'}))
+              }
+            });
+
         })
       });
 
