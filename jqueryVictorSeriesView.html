@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Examen</title>
+
+    <!-- Bootstrap core CSS -->
+<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+
+<meta name="theme-color" content="#7952b3">
+
+    
+    <!-- Custom styles for this template -->
+    <link href="css/bootstrap/navbar-top-fixed.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="./jqueryvictorHome.html">
+          <i class="fas fa-car me-2" style="color: white; font-size: 1.5rem;"></i>
+          <img style="width: 75px;" src="https://1000marcas.net/wp-content/uploads/2020/01/Logo-Netflix.png" alt="logo">
+        </a>
+    
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="./jqueryvictorHome.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./jqueryVictorPersonajesNew.html">Nuevo Personaje</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./jqueryVictorPersonajesPut.html">Modificar Personaje</a>
+            </li>
+    
+            <!-- Dropdown de Series -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="seriesDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Series
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="seriesDropdown" id="seriesMenu">
+
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-5">
+      <h1 id="title" class="text-center">Serie</h1>
+      <div class="card shadow-sm">
+        <div class="row g-0">
+          <div class="col-md-4" id="img">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title" id="nombre"></h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item" id="id"><strong>ID:</strong> {this.state.serie.idSerie}</li>
+                <li class="list-group-item" id="puntuacion"><strong>Puntuación:</strong> {this.state.serie.puntuacion}</li>
+                <li class="list-group-item" id="año"><strong>Año:</strong> {this.state.serie.anyo}</li>
+              </ul>
+              <div class="mt-3" id="personajes">
+                <!-- <a class="btn btn-primary" href="./jqueryVictorPersonajesView.html">
+                  Personajes
+                </a> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+    <script src="JS/jquery-3.7.1.js"></script>
+    <script src="JS/bootstrap/bootstrap.bundle.js"></script>
+    <script>
+      var apiSeries = 'https://apiseriespersonajes.azurewebsites.net/'
+      var params = new window.URLSearchParams(window.location.search); 
+      var id = params.get('id')
+
+      $(document).ready(function () {
+        getSeries()
+        $('#title').html('Detalles de la serie ' + id)
+        $('#personajes').append($('<a>', {class: 'btn btn-primary', text: 'Personajes', href: `./jqueryVictorPersonajesView.html?id=${id}`}))
+
+        getSerie()
+      });
+
+      function getSerie() {
+        let request = 'api/Series/' + id
+
+        $.ajax({
+              type: "GET",
+              url: apiSeries + request,
+              success: function (response) {
+                $('#nombre').html(response.nombre)
+                $('#id').html($('<strong>', { text: 'ID: ' })).append(response.idSerie);
+                $('#puntuacion').html($('<strong>', { text: 'Puntuación: ' })).append(response.puntuacion);
+                $('#año').html($('<strong>', { text: 'Año: ' })).append(response.anyo);
+
+                $('#img').append($('<img>', {src: response.imagen, class: 'img-fluid rounded-start', style: {width: '100%'}}))
+              }
+            });
+      }
+
+      function getSeries() {
+        let request = 'api/Series'
+            $.ajax({
+              type: "GET",
+              url: apiSeries + request,
+              success: function (response) {
+                $('#seriesMenu').html('')
+                $.each(response, function (key, value) { 
+                  $('#seriesMenu').append(`<li><a class="dropdown-item" href="./jqueryVictorSeriesView.html?id=${value.idSerie}">${value.nombre}</a></li>`);
+                });
+              }
+            });
+      }
+    </script>
+</html>
