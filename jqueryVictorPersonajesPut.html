@@ -112,6 +112,8 @@
       $(document).ready(function () {
         getSeries()
         getPersonajes()
+        changePersonaje()
+        changeSerie()
 
         $('#bttSubmit').click(function() {
             personaje = $('#selectPersonaje').val()
@@ -133,23 +135,16 @@
         })
 
         $('#selectSerie').change(function() {
-          request = 'api/Series/' + $('#selectSerie').val()
-          $.ajax({
-              type: "GET",
-              url: apiSeries + request,
-              success: function (response) {
-                console.log(response)
-                $('#imgSerie').html('')
-                $('#imgSerie').append($('<h2>', {text: response.nombre}))
-                $('#imgSerie').append($('<hr>'))
-                $('#imgSerie').append($('<img>', {src: response.imagen, class: 'w-100'}))
-              }
-            });
-
+          changeSerie()
         })
 
         $('#selectPersonaje').change(function() {
-          request = 'api/Personajes/' + $('#selectPersonaje').val()
+          changePersonaje()
+        })
+      });
+
+      function changePersonaje() {
+        request = 'api/Personajes/' + $('#selectPersonaje').val()
           $.ajax({
               type: "GET",
               url: apiSeries + request,
@@ -161,9 +156,22 @@
                 $('#imgPersonaje').append($('<img>', {src: response.imagen, class: 'w-100'}))
               }
             });
+      }
 
-        })
-      });
+      function changeSerie() {
+        request = 'api/Series/' + $('#selectSerie').val()
+          $.ajax({
+              type: "GET",
+              url: apiSeries + request,
+              success: function (response) {
+                console.log(response)
+                $('#imgSerie').html('')
+                $('#imgSerie').append($('<h2>', {text: response.nombre}))
+                $('#imgSerie').append($('<hr>'))
+                $('#imgSerie').append($('<img>', {src: response.imagen, class: 'w-100'}))
+              }
+            });
+      }
 
 
       function getPersonajes (){
