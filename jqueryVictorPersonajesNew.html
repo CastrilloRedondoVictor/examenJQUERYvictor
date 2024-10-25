@@ -130,7 +130,7 @@
                 data: JSON.stringify(data),
                 contentType: "application/json",
                 success: function (response) {
-                    let link = './jqueryvictorHome.html'
+                    let link = './jqueryVictorPersonajesView.html?id=' + parseInt(serie)
                     $(location).attr('href',link);
                 }
             });
